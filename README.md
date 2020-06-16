@@ -1,2 +1,2 @@
 # interpretation-of-the-paper
-关于nlp的论文解读
+个人论文解读笔记
