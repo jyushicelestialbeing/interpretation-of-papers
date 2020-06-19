@@ -25,7 +25,30 @@
     
     
   - ### Transformer架构
-            ![model_architecture](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/model_architecture.jpg)
+    ![model_architecture](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/model_architecture.jpg)
+    
+    
+    左侧部分为encoder，右侧部分为decoder
+    
+    - encoder
+    首先将词转换为词向量(word2vec等方法)作为输入放入encoder中，下文称为input，经过n个多头self-attention和全连接网络后输出
+    
+    在论文原文中，input的维度被设定为512，n=6
+    
+    
+    -decoder
+    相比encoder，decoder多了一个mask层，之后会说明
+    
+    
+    首先说一下Transformer中的self-attention是怎么做的
+    
+    
+    ！[self-attention](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/self-attention.jpg)
+    
+    
+    self-attention将input和Q,K,V三个矩阵进行计算
+    
+    QxK矩阵用于计算当前input和其他单词的相似度，这里要注意，实际上我们对每个单词都准备了qi与ki
     
     
     
