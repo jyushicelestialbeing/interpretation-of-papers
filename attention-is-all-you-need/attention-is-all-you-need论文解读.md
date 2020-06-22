@@ -25,7 +25,7 @@
     
     
   - ### Transformer架构
-    ![model_architecture](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/model_architecture.jpg)
+    ![model architecture](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/model_architecture.jpg)
     
     
     左侧部分为encoder，右侧部分为decoder
@@ -43,12 +43,13 @@
     首先说一下Transformer中的self-attention是怎么做的
     
     
-    ！[self-attention](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/self-attention.jpg)
+    ！[self attention](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/self-attention.jpg)
     
     
     self-attention将input和Q,K,V三个矩阵进行计算
     
-    QxK矩阵用于计算当前input和其他单词的相似度，这里要注意，实际上我们对每个单词都准备了qi与ki
+    QxK矩阵用于计算当前input和其他单词的相似度，这里要注意，实际上我们对每个单词都准备了qi与ki,单词a的qa与单词b的kb相乘的结果可以看做是单词a与b的相关度z，之后将z作为权值和vi加权计算，即可得出当前单词的词向量
+    
     
     
     
