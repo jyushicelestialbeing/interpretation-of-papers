@@ -41,7 +41,7 @@
     
     
     首先说一下Transformer中的self-attention是怎么做的
-    ！[self attention](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/self-attention.jpg)
+    ![self attention](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/self-attention.jpg)
     
     
     self-attention将input和Q,K,V三个矩阵进行计算
