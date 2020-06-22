@@ -31,22 +31,51 @@
     左侧部分为encoder，右侧部分为decoder
     
     - encoder
-    首先将词转换为词向量(word2vec等方法)作为输入放入encoder中，下文称为input，经过n个多头self-attention和全连接网络后输出
+    首先将词转换为词向量(word2vec等方法)作为输入放入encoder中，下文称为input，每层分为两个子层,多头self-attention和全连接网络，每个子层都使用残差连接，然后进行归一化，之后经过n层后输出，每层的输出为LayerNorm(input+SubLayer(input))
     
-    在论文原文中，input的维度被设定为512，n=6
+    在论文原文中，input的维度被设定为512(输出也为512)，n=6
     
     
     -decoder
-    相比encoder，decoder多了一个mask层，之后会说明
+    相比encoder，decoder多了一个mask层，共三个子层，之后会说明
     
     
-    首先说一下Transformer中的self-attention是怎么做的
+    -首先说一下Transformer中的self-attention是怎么做的
+    
+    
     ![self attention](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/self-attention.jpg)
     
     
     self-attention将input和Q,K,V三个矩阵进行计算
     
-    QxK矩阵用于计算当前input和其他单词的相似度，这里要注意，实际上我们对每个单词都准备了qi与ki,单词a的qa与单词b的kb相乘的结果可以看做是单词a与b的相关度z，之后将z作为权值和vi加权计算，即可得出当前单词的词向量
+    QxK矩阵用于计算当前input和其他单词的相似度，这里要注意，实际上我们对每个单词都准备了qi与ki,单词a的qa与单词b的kb相乘的结果可以看做是单词a与b的相关度z，之后将z和vi进行计算(具体细节在下面)，即可得出当前单词的词向量
+    
+    
+    Q,K,V是怎么来的呢，实际上是通过随机初始化三个权重矩阵Wq,Wk,Wv并和input做计算训练得来的，所以Q，K，V矩阵的维度=[1,512]x[512,c] = [1,c]
+    
+    
+    其中c是单词表大小
+    
+    
+    最后说说计算，论文原文给出的公式如下
+    
+    
+    ![r1](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/res.jpg)
+    
+    
+    公式本身没什么可说的了，除dk(k矩阵的维度)是直接做归一化，在这里要说一下其实公式的计算是可以直接使用矩阵加法的，也可以达到差不多的效果，但是根据实验实际上使用矩阵乘的速度要更快，所以使用了乘法，论文原文里也称这种带归一化和使用矩阵乘的self-attention为Scaled Dot-Product Attention
+   
+    
+    -多头机制
+    
+    
+    Transformer中使用了multi-self-attention，将Q,K,V矩阵分成多个小矩阵，论文原文中是分成64维，即分成8个，把self-attention做8次，这种方法可以捕捉不同子空间的信息，论文中说是效果更好,此时计算过程如下图所示
+    
+    
+    最后我们将8个多头计算的结果拼接放入前向神经网络里即可
+    
+    
+    
     
     
     
