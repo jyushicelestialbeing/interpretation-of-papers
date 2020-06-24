@@ -51,6 +51,9 @@
     QxK矩阵用于计算当前input和其他单词的相似度，这里要注意，实际上我们对每个单词都准备了qi与ki,单词a的qa与单词b的kb相乘的结果可以看做是单词a与b的相关度z，之后将z和vi进行计算(具体细节在下面)，即可得出当前单词的词向量
     
     
+    ![QK](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/QK.jpg)
+    
+    
     Q,K,V是怎么来的呢，实际上是通过随机初始化三个权重矩阵Wq,Wk,Wv并和input做计算训练得来的，所以Q，K，V矩阵的维度=[1,512]x[512,c] = [1,c]
     
     
@@ -70,6 +73,9 @@
     
     
     Transformer中使用了multi-self-attention，将Q,K,V矩阵分成多个小矩阵，论文原文中是分成64维，即分成8个，把self-attention做8次，这种方法可以捕捉不同子空间的信息，论文中说是效果更好,此时计算过程如下图所示
+    
+    
+    ![multi-self-attention](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/multi.jpg)
     
     
     最后我们将8个多头计算的结果拼接放入前向神经网络里即可
