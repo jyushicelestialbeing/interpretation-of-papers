@@ -1,6 +1,6 @@
 # Attention is All you need解读
   - ### 前言
-    attention->注意力机制，目前比较火的基于deep learning技术
+    attention->注意力机制，目前比较火的基于deep learning的nlp技术
     
     
     本文帮助大家解读google的attention is all you need一文，项目中附上了原论文
@@ -92,6 +92,38 @@
     
     
     在Transformer中我们使用Positional Encoding(以下简称pe)方法对位置信息进行保留
+    
+    
+    ![PE](https://github.com/jyushicelestialbeing/interpretation-of-papers/blob/master/attention-is-all-you-need/PE.jpg)
+    
+    
+    pos指单词在句子中的位置，i指每个词向量中每个元素的下标，dmodel为向量维度，所以在i为奇数时使用正弦，偶数时使用余弦
+    
+    
+    最终将PE和词向量相加作为input向下一层传播
+    
+    
+  - ### Layer Normalization
+    Transformer中用到的归一化为Layer Normalization，其实这部分没什么可说的，很多地方把Layer Normalization说的太复杂，简单来说就是Layer Normalization以每个样本为单位进行归一化，比如每个单词的词向量，有别于Batch normalization(从每个样本中取元素归一化，数量为mini-batch大小)，Transformer使用Layer Normalization的原因也很简单
+    
+    
+    因为有关于位置信息的数据用不了Batch normalization......
+    
+    
+ - ### 遮罩
+   最后说一下Transformer中比较精妙的部分，Transformer中使用了两种Mask，一个是Padding Mask，一个是Sequence mask，但是只有Sequence Mask才是所谓的遮罩，Padding Mask是用来对数据长度进行统一的，简单来说就是由于文本中每句话长度不一样，所以导致以句为单位的样本长度不同，需要统一长度(bert中就是这么要求的)，一般就是从左侧补0或者从左侧截取，这部分没什么可解释的，下面重点介绍一下Sequence Mask
+   
+   
+   Sequence Mask简单来说就是给解码器增加难度，只让解码器看到1到n位置的信息，把n+1之后的信息遮挡起来
+   
+   
+   Sequence mask的具体实现方法是使用一个对角线为0，下三角全为0，上三角全为1的矩阵和序列相乘，这部分我其实也没太看懂，详细可以参考这篇文章      http://nlp.seas.harvard.edu/2018/04/03/attention.html
+   
+   
+   ![mat](https://github.com/jyushicelestialbeing/interpretation-of-papers/blob/master/attention-is-all-you-need/the-annotated-transformer_31_0.png)
+   
+   
+   一般我们在decoder部分使用Padding Mask和Sequence mask相加使用，其他部分使用Padding Mask
     
     
     
