@@ -43,6 +43,9 @@
     ![cbow-2](https://github.com/jyushicelestialbeing/interpretation-of-papers/blob/master/word2vec%E4%B8%A4%E7%AF%87/cbow-2.jpg)
     
     
+    另外关于窗口大小的选择，原文中给出的一个比较合适的值是10
+    
+    
     
     
     
