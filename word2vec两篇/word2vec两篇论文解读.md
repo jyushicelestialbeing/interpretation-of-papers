@@ -46,6 +46,24 @@
     另外关于窗口大小的选择，原文中给出的一个比较合适的值是10
     
     
+  - ### Skip-gram
+    skip-gram和cbow模型正好相反，skip-gram是利用一个中心词wt去预测w1到wc+1这个c个词，总体上skip-gram的架构相同，在复杂度上，由于skip-gram的输入是一个词，所以每个单词的复杂度为D+Dxlog2|v|，但是由于最终的输出需要和每个周围词进行损失计算，所以最终实际上要训练c次，则总体复杂度为
+    
+    
+    ![skip-gram1](https://github.com/jyushicelestialbeing/interpretation-of-papers/blob/master/word2vec%E4%B8%A4%E7%AF%87/skip-gram1.jpg)
+    
+    
+    ![skip-gram](https://github.com/jyushicelestialbeing/interpretation-of-papers/blob/master/word2vec%E4%B8%A4%E7%AF%87/skip-gram2.jpg)
+    
+    
+    以上是skip-gram的架构，同样在复杂度上最后的log2|v|也是使用了后面的优化方法，对于C的选择，原文中给出的比较适合的值是10
+    
+    
+  最后要说的一点是，word2vec的训练并不要求loss低，而是只需要训练的副产物，即VxD和DxV这两个矩阵即可，由于input为one-hot编码，所以实际上这两个矩阵的每一行就代表单词表中的一个单词
+  
+  
+  比如input为[0,1,0,0]，训练后的VxD矩阵中的第二行就代表input的这个单词，此时我们取第二行即是训练好的词向量，至于使用两个矩阵中的哪个，其实都可以，大多数情况下我们使用第一个矩阵
+    
     
     
     
