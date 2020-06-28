@@ -64,6 +64,26 @@
   
   比如input为[0,1,0,0]，训练后的VxD矩阵中的第二行就代表input的这个单词，此时我们取第二行即是训练好的词向量，至于使用两个矩阵中的哪个，其实都可以，大多数情况下我们使用第一个矩阵
     
+  
+  最后word2vec通过一个softmax输出
+- ### Distributed Representations of Words and Phrasesand their Compositionality
+  本篇论文主要阐述在skip-gram架构下如何做优化
+  
+  
+  word2vec在最后softmax输出的部分会遇到一个复杂度爆炸的问题
+  
+  
+  ![softmax](https://github.com/jyushicelestialbeing/interpretation-of-papers/blob/master/word2vec%E4%B8%A4%E7%AF%87/softmax.jpg)
+  
+  
+  最终softmax层计算量和词典大小V相同，一般情况下词典大小都会很大，所以当v很大时最后一层的计算几乎是不可能完成的
+  
+  
+  Mikolov在本文中提出了两种针对word2vec的优化方法使得最后的softmax层计算量大大减少
+  
+  
+  - ### Hierarchical Softmax
+    我们将输出层变为一颗霍夫曼树，该树共有V个叶子节点，代表词典中全部的单词，共有V-1个非叶子节点
     
     
     
