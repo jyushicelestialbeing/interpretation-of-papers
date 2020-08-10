@@ -70,7 +70,7 @@
    
     
     -多头机制
-    Transformer中使用了multi-self-attention，将Q,K,V矩阵分成多个小矩阵，论文原文中是分成64维，即分成8个，把self-attention做8次，这种方法可以捕捉不同子空间的信息，论文中说是效果更好,此时计算过程如下图所示
+    Transformer中使用了multi-self-attention，将Q,K,V矩阵分成多个小矩阵，论文原文中是分成64维，即分成8个，把self-attention做8次，这种方法可以捕捉不同子空间的信息，论文中说是效果更好,但是根据我的实际测试，在不同的下游任务下，有时8个头的效果略差于小于8个头的效果，而且8个头也并非独立捕捉不同的子空间信息，大多数情况下8个头中的5到6个头会捕捉相同的信息，另外的头会捕捉不同的信息，计算过程如下图所示
     
     
     ![multi-self-attention](https://github.com/jyushicelestialbeing/interpretation-of-the-paper/blob/master/attention-is-all-you-need/multi.jpg)
@@ -111,19 +111,19 @@
     
     
  - ### 遮罩
-   最后说一下Transformer中比较精妙的部分，Transformer中使用了两种Mask，一个是Padding Mask，一个是Sequence mask，但是只有Sequence Mask才是所谓的遮罩，Padding Mask是用来对数据长度进行统一的，简单来说就是由于文本中每句话长度不一样，所以导致以句为单位的样本长度不同，需要统一长度(bert中就是这么要求的)，一般就是从左侧补0或者从左侧截取，这部分没什么可解释的，下面重点介绍一下Sequence Mask
+   最后说一下Transformer中比较精妙的部分，Transformer中使用了两种Mask，一个是Padding Mask，一个是Sequence mask，但是只有Sequence Mask才是所谓的遮罩，Padding Mask是用来对数据长度进行统一的，简单来说就是由于文本中每句话长度不一样，所以导致以句为单位的样本长度不同，需要统一长度(bert中就是这么要求的)，一般就是从左侧补0或者从左侧截取，这部分没什么可解释的，当然有一点要说一下，由于mask只计算QxK，不计算V，同时最终的计算结果会被输入到一个softmax中，所以实际中一般会在矩阵送入softmax前将0值的元素变为一个特别特别小的负数，让softmax后这些值依然保持接近0(两种mask都是这么处理的)，下面重点介绍一下Sequence Mask
    
    
    Sequence Mask简单来说就是给解码器增加难度，只让解码器看到1到n位置的信息，把n+1之后的信息遮挡起来
    
    
-   Sequence mask的具体实现方法是使用一个对角线为0，下三角全为0，上三角全为1的矩阵和序列相乘，这部分我其实也没太看懂，详细可以参考这篇文章      http://nlp.seas.harvard.edu/2018/04/03/attention.html
+   Sequence mask的具体实现方法是使用一个对角线为0，下三角全为0，上三角全为1的矩阵和序列相乘,矩阵的行列是这句话分词(字)的每个元素,而每个元素就是当前行对应的词(字)能否看到当前列对应的词(字)
    
    
    ![mat](https://github.com/jyushicelestialbeing/interpretation-of-papers/blob/master/attention-is-all-you-need/the-annotated-transformer_31_0.png)
    
    
-   一般我们在decoder部分使用Padding Mask和Sequence mask相加使用，其他部分使用Padding Mask
+   一般我们在decoder部分使用Padding Mask和Sequence mask相加使用(架构图中标注为masked的那一层就是Sequence mask了)，其他部分使用Padding Mask
     
     
     
