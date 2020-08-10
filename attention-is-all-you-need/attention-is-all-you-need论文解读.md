@@ -9,7 +9,10 @@
     注意力机制用于处理序列数据(如文本等)，解决的传统rnn,lstm等模型的诸多问题
     
     
-    google在原论文中称他们提出的attention模型为Transformer，完全以来self-attention机制来阐述输入和输出之间的以来关系
+    google在原论文中称他们提出的attention模型为Transformer，以self-attention机制来阐述输入和输出之间的以来关系
+    
+    
+    bert,xlnet等架构则基于有attention作为内核的Transformer架构，但是请注意，bert并不是Transformer的encoder！这一点最开始我也搞错了，熟悉了Transformer的细节之后才发现，bert和Transformer的encoder在技术上有许多不同
     
     
     Transformer也在nlp方向应用较多，并且相比传统的rnn等模型速度更快(因为它可以并行计算),训练结果质量更高
